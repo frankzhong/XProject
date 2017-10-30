@@ -1,5 +1,6 @@
 package company.com.xproject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -31,8 +32,8 @@ public class MainActivity extends AppCompatActivity
     Button cashView;
     @BindView(R.id.button4)
     Button shareView;
-    FragmentManager fm;
-    FragmentTransaction ft;
+    android.app.FragmentManager fm;
+    android.app.FragmentTransaction ft;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,29 +144,41 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void selectFragment(int type){
-        fm = getSupportFragmentManager();
-        ft = fm.beginTransaction();
+//        fm = getFragmentManager();
+//        ft = fm.beginTransaction();
         switch(type){
             case 0:
-                LonLatFragment lonLatFragment = new LonLatFragment();
-                ft.add(R.id.contentlayout, lonLatFragment);
+                Intent i1 = new Intent(MainActivity.this, ManageActivity.class);
+                i1.putExtra(ManageActivity.TYPE, 0);
+                startActivity(i1);
+//                LonLatFragment lonLatFragment = new LonLatFragment();
+//                ft.add(R.id.contentlayout, lonLatFragment);
                 break;
             case 1:
-                SenderFragment senderFragment = new SenderFragment();
-                ft.add(R.id.contentlayout, senderFragment);
+                Intent i2 = new Intent(MainActivity.this, ManageActivity.class);
+                i2.putExtra(ManageActivity.TYPE, 1);
+                startActivity(i2);
+//                SenderFragment senderFragment = new SenderFragment();
+//                ft.add(R.id.contentlayout, senderFragment);
                 break;
             case 2:
-                CashFragment cashFragment = new CashFragment();
-                ft.add(R.id.contentlayout, cashFragment);
+                Intent i3 = new Intent(MainActivity.this, ManageActivity.class);
+                i3.putExtra(ManageActivity.TYPE, 2);
+                startActivity(i3);
+//                CashFragment cashFragment = new CashFragment();
+//                ft.add(R.id.contentlayout, cashFragment);
                 break;
             case 3:
-                ShareFragment shareFragment = new ShareFragment();
-                ft.add(R.id.contentlayout, shareFragment);
+                Intent i4 = new Intent(MainActivity.this, ManageActivity.class);
+                i4.putExtra(ManageActivity.TYPE, 3);
+                startActivity(i4);
+//                ShareFragment shareFragment = new ShareFragment();
+//                ft.add(R.id.contentlayout, shareFragment);
                 break;
             default:
                 break;
         }
-        ft.commit();
+//        ft.commit();
 
 
     }
