@@ -9,11 +9,26 @@
         android:layout_height="wrap_content">
 
         <android.support.design.widget.TextInputEditText
+            android:id="@+id/edt_city"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入城市"
+            android:text="深圳"
+            android:padding="5dp"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/edt_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="请输入要查询的地址"
-            android:padding="10dp"/>
+            android:hint="请输入详细地址"
+            android:text="马家龙百货"
+            android:padding="5dp"/>
     </android.support.design.widget.TextInputLayout>
 
     <LinearLayout
@@ -54,9 +69,9 @@
 
     <com.baidu.mapapi.map.TextureMapView
         android:id="@+id/mTexturemap"
-        android:layout_marginTop="5dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent"
+        android:layout_marginTop="5dp">
     </com.baidu.mapapi.map.TextureMapView>
 
 </LinearLayout>

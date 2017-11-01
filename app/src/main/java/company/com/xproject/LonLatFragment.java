@@ -1,5 +1,7 @@
 package company.com.xproject;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -12,6 +14,10 @@ import android.widget.TextView;
 
 import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
+import com.baidu.mapapi.map.BitmapDescriptor;
+import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MarkerOptions;
+import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.TextureMapView;
 import com.baidu.mapapi.model.LatLng;
 import com.baidu.mapapi.search.core.SearchResult;
@@ -31,6 +37,8 @@ import butterknife.ButterKnife;
 public class LonLatFragment extends android.app.Fragment{
     @BindView(R.id.mTexturemap)
     TextureMapView mMapView = null;
+    @BindView(R.id.edt_city)
+    TextInputEditText mCityEdit;
     @BindView(R.id.edt_address)
     TextInputEditText mAddressEdit;
     @BindView(R.id.text_lon)
@@ -59,8 +67,8 @@ public class LonLatFragment extends android.app.Fragment{
             @Override
             public void onClick(View v) {
                 mSearch.geocode(new GeoCodeOption()
-                        .city("深圳")
-                        .address("马家龙百货"));
+                        .city(mCityEdit.getText().toString())
+                        .address(mAddressEdit.getText().toString()));
             }
         });
 
@@ -102,6 +110,7 @@ public class LonLatFragment extends android.app.Fragment{
             mLatText.setText(String.valueOf(latLng.latitude));
             mLonText.setText(String.valueOf(latLng.longitude));
             //获取地理编码结果
+            setPointView(latLng);
         }
 
         @Override
@@ -115,4 +124,11 @@ public class LonLatFragment extends android.app.Fragment{
             //获取反向地理编码结果
         }
     };
+
+    private void setPointView(LatLng lng) {
+        Bitmap markerIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.marker);
+        BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(markerIcon);
+        OverlayOptions options = new MarkerOptions().position(lng).icon(bitmap);
+        mBaiduMap.addOverlay(options);
+    }
 }
