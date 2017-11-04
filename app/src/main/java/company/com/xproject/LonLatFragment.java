@@ -16,6 +16,9 @@ import com.baidu.mapapi.SDKInitializer;
 import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
+import com.baidu.mapapi.map.MapStatus;
+import com.baidu.mapapi.map.MapStatusUpdate;
+import com.baidu.mapapi.map.MapStatusUpdateFactory;
 import com.baidu.mapapi.map.MarkerOptions;
 import com.baidu.mapapi.map.OverlayOptions;
 import com.baidu.mapapi.map.TextureMapView;
@@ -111,6 +114,7 @@ public class LonLatFragment extends android.app.Fragment{
             mLonText.setText(String.valueOf(latLng.longitude));
             //获取地理编码结果
             setPointView(latLng);
+            jumpToLocation(latLng);
         }
 
         @Override
@@ -125,10 +129,23 @@ public class LonLatFragment extends android.app.Fragment{
         }
     };
 
+
     private void setPointView(LatLng lng) {
         Bitmap markerIcon = BitmapFactory.decodeResource(getResources(), R.mipmap.marker);
         BitmapDescriptor bitmap = BitmapDescriptorFactory.fromBitmap(markerIcon);
         OverlayOptions options = new MarkerOptions().position(lng).icon(bitmap);
         mBaiduMap.addOverlay(options);
+    }
+
+    private void jumpToLocation(LatLng point) {
+        MapStatus mMapStatus = new MapStatus.Builder()
+                .target(point)
+                .zoom(20)
+                .build();
+        //定义MapStatusUpdate对象，以便描述地图状态将要发生的变化
+
+        MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
+        //改变地图状态
+        mBaiduMap.setMapStatus(mMapStatusUpdate);
     }
 }
