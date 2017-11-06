@@ -1,5 +1,6 @@
 package company.com.xproject;
 
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -38,8 +40,8 @@ import butterknife.ButterKnife;
  */
 
 public class LonLatFragment extends android.app.Fragment{
-    @BindView(R.id.mTexturemap)
-    TextureMapView mMapView = null;
+//    @BindView(R.id.mTexturemap)
+//    TextureMapView mMapView = null;
     @BindView(R.id.edt_city)
     TextInputEditText mCityEdit;
     @BindView(R.id.edt_address)
@@ -50,8 +52,12 @@ public class LonLatFragment extends android.app.Fragment{
     TextView mLatText;
     @BindView(R.id.btn_search)
     Button mSearchBtn;
+
+    private TextureMapView mMapView;
+
     private BaiduMap mBaiduMap;
     private GeoCoder mSearch;
+
 
     @Nullable
     @Override
@@ -60,8 +66,16 @@ public class LonLatFragment extends android.app.Fragment{
         View view = inflater.inflate(R.layout.fragment_lonlat, container, false);
         ButterKnife.bind(this, view);
 
-        mBaiduMap = mMapView.getMap();
-        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+//        alertDialog = new AlertDialog.Builder(LonLatFragment.this.getActivity()).create();
+//        alertDialog.hide();
+//        Window window = alertDialog.getWindow();
+//        window.setContentView(R.layout.dialog_map);
+//        mMapView = (TextureMapView) window.findViewById(R.id.mTexturemap);
+//        mBaiduMap = mMapView.getMap();
+//        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+
+//        mBaiduMap = mMapView.getMap();
+//        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
 
         mSearch = GeoCoder.newInstance();
         mSearch.setOnGetGeoCodeResultListener(listener);
@@ -69,6 +83,11 @@ public class LonLatFragment extends android.app.Fragment{
         mSearchBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //弹出带地图的Dialog，让用户确认定位是否准确
+                showMapDialog();
+
+
+
                 mSearch.geocode(new GeoCodeOption()
                         .city(mCityEdit.getText().toString())
                         .address(mAddressEdit.getText().toString()));
@@ -79,6 +98,35 @@ public class LonLatFragment extends android.app.Fragment{
         return view;
     }
 
+    private void showMapDialog() {
+        final AlertDialog alertDialog = new AlertDialog.Builder(LonLatFragment.this.getActivity()).create();
+        alertDialog.show();
+        Window window = alertDialog.getWindow();
+        window.setContentView(R.layout.dialog_map);
+        mMapView = (TextureMapView) window.findViewById(R.id.mTexturemap);
+        mBaiduMap = mMapView.getMap();
+        mBaiduMap.setMapType(BaiduMap.MAP_TYPE_NORMAL);
+
+        Button okBtn = (Button) window.findViewById(R.id.btn_ok);
+        Button cancelBtn = (Button) window.findViewById(R.id.btn_cancel);
+
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+        cancelBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alertDialog.dismiss();
+            }
+        });
+
+
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -86,12 +134,12 @@ public class LonLatFragment extends android.app.Fragment{
         //在activity执行onDestroy时执行mMapView.onDestroy()，实现地图生命周期管理
         mMapView.onDestroy();
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        //在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
-        mMapView.onResume();
-    }
+//    @Override
+//    public void onResume() {
+//        super.onResume();
+//        //在activity执行onResume时执行mMapView. onResume ()，实现地图生命周期管理
+//        mMapView.onResume();
+//    }
     @Override
     public void onPause() {
         super.onPause();
